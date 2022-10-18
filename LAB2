@@ -1,0 +1,107 @@
+
+
+import javafx.application.Application;
+import javafx.scene.Scene; 
+import javafx.scene.control.*; 
+import javafx.scene.layout.*; 
+import javafx.event.ActionEvent; 
+import javafx.event.EventHandler;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.stage.Stage; 
+
+
+public class App extends Application { 
+  
+    // launch the application 
+    public void start(Stage s) 
+    { 
+        // set title for the stage 
+        s.setTitle("creating CheckBox"); 
+  
+        // create a tile pane 
+        GridPane r = new GridPane(); 
+        r.setAlignment(Pos.TOP_CENTER);
+        r.setPadding(new Insets(10, 10, 10, 10));
+        r.setHgap(5.5);
+        r.setVgap(5.5);
+
+        // create a label 
+        Label l = new Label("Tick your vehicle"); 
+        // add label 
+        r.add(l, 0, 0);
+        //create textfield
+        TextField speed = new TextField();
+        TextField limit = new TextField();
+        TextField fined = new TextField();
+        
+            // create a checkbox 
+            CheckBox Car = new CheckBox("Car");
+            CheckBox Bike = new CheckBox("Bike"); 
+            // add label 
+            r.add(Car, 0, 1);
+            r.add(Bike, 1, 1);
+            // set IndeterMinate 
+            Car.setIndeterminate(false);
+            Bike.setIndeterminate(false);
+            //for user
+            r.add(new Label("Vehicle Speed:"), 0, 3); 
+            r.add(speed, 1, 3);
+            r.add(new Label("Speed Limit:"), 0, 4);
+            r.add(limit, 1, 4);
+            r.add(new Label("Fined:"), 0, 6);
+            r.add(fined, 1, 6);
+            Button btCalc = new Button("Calculate");
+            r.add(btCalc, 1, 5);
+            GridPane.setHalignment(btCalc, HPos.CENTER);
+            
+            //create event handler
+            EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() { 
+  
+                public void handle(ActionEvent e) 
+                { 
+                    if (Car.isSelected()) {
+                        
+                        int a=Integer.parseInt(speed.getText());
+                        int b=Integer.parseInt(limit.getText());
+                        if(a>b){
+                            double c= (a-b)*(a-b)*0.5;
+                            fined.setText("RM "+Double.toString(c));
+                        }
+                        else
+                        fined.setText("RM 0");
+                        
+                    }
+                    else if (Bike.isSelected()){
+                        int a=Integer.parseInt(speed.getText());
+                        int b=Integer.parseInt(limit.getText());
+                        if(a>b){
+                            double c= 30 + (a-b);
+                            fined.setText("RM "+Double.toString(c));
+                        }
+                        else
+                        fined.setText("RM 0");
+                    }
+                    
+                }   
+            };
+              // set event to checkbox 
+              btCalc.setOnAction(event); 
+  
+  
+        // create a scene 
+        Scene sc = new Scene(r, 270, 220); 
+  
+        // set the scene 
+        s.setScene(sc); 
+  
+        s.show(); 
+    } 
+  
+    public static void main(String args[]) 
+    { 
+        // launch the application 
+        launch(args); 
+    } 
+} 
