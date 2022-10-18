@@ -1,0 +1,64 @@
+
+import javafx.application.Application;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
+import javafx.geometry.VPos;
+import javafx.scene.Scene;  
+import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color; 
+public class App extends Application{  
+  
+    @Override  
+    public void start(Stage primaryStage) throws Exception {  
+        /*  button codes  
+        Button btn1=new Button("Say, Hello World");  
+        btn1.setOnAction(new EventHandler<ActionEvent>() {  
+              
+            @Override  
+            public void handle(ActionEvent arg0) {  
+                // output for button 
+                //System.out.println("hello world");  
+            }  
+        });  */
+        //Create a pane and set it properties
+        GridPane pane = new GridPane();
+        pane.setPadding(new Insets(10,10,10,10));
+        pane.setHgap(5.5);
+        pane.setVgap(5.5);
+
+        //Place nodes in the pane
+        for(int i = 0; i<10; i++){
+            for(int j = 0; j<10; j++){
+                TextField text = new TextField();
+                text.setPrefColumnCount(1);
+                
+                text.setStyle("-fx-background-color: #BA55D3");
+                text.setText(String.valueOf((int)(Math.random() *2)));
+                pane.add(text, i, j);
+                
+                GridPane.setHalignment(text, HPos.CENTER);
+                GridPane.setValignment(text, VPos.CENTER);
+            }
+        }
+        
+        
+
+        
+        Scene scene=new Scene(pane);      
+        //primaryStage.setHeight(400);
+        //primaryStage.setWidth(400);
+
+        primaryStage.setTitle("KOTAK KOTAK");  
+        primaryStage.setScene(scene);  
+        primaryStage.show();  
+    
+    }  
+    public static void main (String[] args)  
+    {  
+        launch(args);  
+    }  
+  
+}
