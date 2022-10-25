@@ -57,6 +57,29 @@ public class App extends Application {
             GridPane.setHalignment(btCalc, HPos.CENTER);
             
             //create event handler
+            EventHandler<ActionEvent> OnOffBike = new EventHandler<ActionEvent>() { 
+  
+                public void handle(ActionEvent e) 
+                {
+                    if(!Car.isSelected())
+                    r.getChildren().add(Bike);
+                    else
+                    r.getChildren().remove(Bike);
+                }};
+                
+            EventHandler<ActionEvent> OnOffCar = new EventHandler<ActionEvent>() { 
+  
+                public void handle(ActionEvent e) 
+                {
+                    if(!Bike.isSelected())
+                    r.getChildren().add(Car);
+                    else
+                    r.getChildren().remove(Car);
+                }};
+
+                Car.setOnAction(OnOffBike);
+                Bike.setOnAction(OnOffCar);
+                
             EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() { 
   
                 public void handle(ActionEvent e) 
@@ -71,9 +94,9 @@ public class App extends Application {
                         }
                         else
                         fined.setText("RM 0");
-                        
                     }
                     else if (Bike.isSelected()){
+                        
                         int a=Integer.parseInt(speed.getText());
                         int b=Integer.parseInt(limit.getText());
                         if(a>b){
@@ -87,8 +110,9 @@ public class App extends Application {
                 }   
             };
               // set event to checkbox 
-              btCalc.setOnAction(event); 
-  
+              btCalc.setOnAction(event);
+              
+        
   
         // create a scene 
         Scene sc = new Scene(r, 270, 220); 
