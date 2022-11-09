@@ -1,0 +1,92 @@
+import javafx.application.Application;
+import javafx.scene.*;
+import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
+
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
+
+
+public class App extends Application {
+    private static final double MAX_X = 600;
+    private static final double MAX_Y = 300;
+
+    private int clickCount = 0;
+    private Random random;
+    private long time;
+    
+
+    @Override
+    public void init() {
+        random = new Random();
+    }
+
+    @Override
+    public void start(Stage stage){
+        Label time1 = new Label("00:00:00");
+        Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
+            long millis = System.currentTimeMillis() - time;
+            String txt = String.format("%02d:%02d:%02d",
+                    TimeUnit.MICROSECONDS.toMinutes(millis),
+                    TimeUnit.MICROSECONDS.toSeconds(millis) -
+                            TimeUnit.MINUTES.toSeconds(TimeUnit.MICROSECONDS.toMinutes(millis)),
+                    TimeUnit.MICROSECONDS.toMillis(millis) -
+                            TimeUnit.SECONDS.toMillis(TimeUnit.MICROSECONDS.toSeconds(millis)));
+            time1.setText(txt);
+        }), new KeyFrame(Duration.millis(0.1)));
+        clock.setCycleCount(Animation.INDEFINITE);
+
+        Circle circle = new Circle(MAX_X / 2, MAX_Y / 2, 30, Color.WHITE);
+        Text clickCountText = new Text("Clicks: " + clickCount); 
+        Label duration = new Label("  Duration ");
+        circle.setOnMouseClicked((event)->{
+            if (clock.getStatus() != Animation.Status.RUNNING) {
+                time = System.currentTimeMillis();
+                clock.play();
+            }
+            clickCount++;
+            clickCountText.setText("Clicks: " + clickCount);
+            if (clickCount==10){
+                clock.stop();
+
+                Stage time = new Stage();
+                BorderPane pane = new BorderPane();
+                pane.getChildren().addAll(duration, time1);
+                Scene sce = new Scene(pane, 250, 50);
+
+                time.setScene(sce);
+                time.setTitle("Time Taken");
+                time.show();
+
+
+            }
+            circle.setCenterX(random.nextInt((int) MAX_X));
+            circle.setCenterY(random.nextInt((int) MAX_Y));
+        });
+        
+        Group layout = new Group(
+                circle,
+                new FlowPane(clickCountText,duration,time1)
+        );
+
+        stage.setTitle("Click Circle");
+        stage.setScene(new Scene(layout, MAX_X, MAX_Y, Color.VIOLET));
+        stage.setResizable(false);
+        stage.show();
+    }
+
+ 
+    public static void main(String[] args) {
+        launch(args);
+    }
+}
+
