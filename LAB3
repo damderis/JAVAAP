@@ -32,37 +32,27 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage){
-        Label time1 = new Label("00:00:00");
-        Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
-            long millis = System.currentTimeMillis() - time;
-            String txt = String.format("%02d:%02d:%02d",
-                    TimeUnit.MICROSECONDS.toMinutes(millis),
-                    TimeUnit.MICROSECONDS.toSeconds(millis) -
-                            TimeUnit.MINUTES.toSeconds(TimeUnit.MICROSECONDS.toMinutes(millis)),
-                    TimeUnit.MICROSECONDS.toMillis(millis) -
-                            TimeUnit.SECONDS.toMillis(TimeUnit.MICROSECONDS.toSeconds(millis)));
-            time1.setText(txt);
-        }), new KeyFrame(Duration.millis(0.1)));
-        clock.setCycleCount(Animation.INDEFINITE);
+       long start = System.currentTimeMillis();
+       
 
         Circle circle = new Circle(MAX_X / 2, MAX_Y / 2, 30, Color.WHITE);
         Text clickCountText = new Text("Clicks: " + clickCount); 
         Label duration = new Label("  Duration ");
         circle.setOnMouseClicked((event)->{
-            if (clock.getStatus() != Animation.Status.RUNNING) {
-                time = System.currentTimeMillis();
-                clock.play();
-            }
-            clickCount++;
-            clickCountText.setText("Clicks: " + clickCount);
-            if (clickCount==10){
-                clock.stop();
-
+            if(clickCount <20){
+                clickCount++
+               clickCountText.setText("Clicks: " + clickCount);
+            }           
+            else{
+                long end = System.currentTimeMillis() - start;
+                
                 Stage time = new Stage();
+                
                 BorderPane pane = new BorderPane();
+                Label time1 = new Label(Long.toString(end));
                 pane.getChildren().addAll(duration, time1);
                 Scene sce = new Scene(pane, 250, 50);
-
+    
                 time.setScene(sce);
                 time.setTitle("Time Taken");
                 time.show();
